@@ -18,7 +18,7 @@
 #' - `Alpha.new`: the updated estiamte of the Alpha parameter of the SpaRTaCUS model.
 #' - `Beta.new`: the updated estiamte of the Beta parameter of the SpaRTaCUS model.
 #'
-geneVariances.Fast <- function(x, gene.names = NULL, MCMC.interval = list(level = .95, R = 10^4)){
+geneVariances.approx <- function(x, gene.names = NULL, MCMC.interval = list(level = .95, R = 10^4)){
   if(class(x) != "spartacus") stop("x is not a spartacus object")
   X <- x$x
   coordinates <- x$coord
@@ -70,8 +70,7 @@ geneVariances.Fast <- function(x, gene.names = NULL, MCMC.interval = list(level 
       Linv <- computeLinv(covparms = c(1, Phi[r], Delta[k,r]),
                           covfun_name = "exponential_isotropic",
                           locs.ordered = coordinates[Ds == r,],
-                          iNN = iNN[[r]],
-                          m = n.neighbors)
+                          iNN = iNN[[r]])
       Eta <- Linv%*%(t(X[Cs == k, Ds == r])-Mu[k,r])
       Qt <- colSums(Eta*Eta)
 

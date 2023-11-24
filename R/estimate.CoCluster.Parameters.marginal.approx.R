@@ -1,13 +1,12 @@
-estimate.CoCluster.Parameters.marginal <- function(x,
-                                                   locs.ordered,
-                                                   iNN,
-                                                   n.neighbors,
-                                                   Alpha,
-                                                   Tau,
-                                                   mu0,
-                                                   delta0,
-                                                   beta0,
-                                                   Phi
+estimate.CoCluster.Parameters.marginal.approx <- function(x,
+                                                       locs.ordered,
+                                                       iNN,
+                                                       Alpha,
+                                                       Tau,
+                                                       mu0,
+                                                       delta0,
+                                                       beta0,
+                                                       Phi
 )
 {
   n <- nrow(x)
@@ -21,8 +20,7 @@ estimate.CoCluster.Parameters.marginal <- function(x,
     Linv <- computeLinv(covparms = c(1, Phi, delta),
                         covfun_name = "exponential_isotropic",
                         locs.ordered = locs.ordered,
-                        iNN = iNN,
-                        m = n.neighbors)
+                        iNN = iNN)
 
     nlogDet <- 2*sum(log(diag(Linv)))
     Vinv <- t(Linv)%*%Linv
@@ -40,8 +38,7 @@ estimate.CoCluster.Parameters.marginal <- function(x,
   Linv <- computeLinv(covparms = c(1, Phi, cur.delta),
                       covfun_name = "exponential_isotropic",
                       locs.ordered = locs.ordered,
-                      iNN = iNN,
-                      m = n.neighbors)
+                      iNN = iNN)
   Vinv <- t(Linv)%*%Linv
   cur.mu <- as.numeric(colSums(Vinv)%*%colMeans(x)/sum(Vinv))
 

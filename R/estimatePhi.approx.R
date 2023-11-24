@@ -1,4 +1,4 @@
-estimatePhi <- function(x, Cs, locs.ordered, iNN, Alpha, Tau, Mu, Delta, Beta, phi.old = 1, n.neighbors){
+estimatePhi.approx <- function(x, Cs, locs.ordered, iNN, Alpha, Tau, Mu, Delta, Beta, phi.old = 1){
   goodK <- sort(unique(Cs))
 
   val <- rep(0,length(goodK))
@@ -7,8 +7,7 @@ estimatePhi <- function(x, Cs, locs.ordered, iNN, Alpha, Tau, Mu, Delta, Beta, p
       Linv <- computeLinv(covparms = c(1, phi, Delta[k]),
                           covfun_name = "exponential_isotropic",
                           locs.ordered = locs.ordered,
-                          iNN = iNN,
-                          m = n.neighbors)
+                          iNN = iNN)
       nlogDet <- 2*sum(log(diag(Linv)))
       Eta <- Linv%*%(t(x[Cs == k,])-Mu[k])
       Qt <- sum(Eta*Eta)

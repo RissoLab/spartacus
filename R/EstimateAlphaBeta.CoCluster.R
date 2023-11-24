@@ -2,7 +2,6 @@ updateAlphaBeta.CoCluster <- function(x,
                                       locs.ordered,
                                       Linv = NULL,
                                       iNN = NULL,
-                                      n.neighbors = NULL,
                                       Alpha,
                                       Tau,
                                       Mu,
@@ -21,8 +20,7 @@ updateAlphaBeta.CoCluster <- function(x,
     Linv <- computeLinv(covparms = c(1, Phi, Delta),
                         covfun_name = "exponential_isotropic",
                         locs.ordered = locs.ordered,
-                        iNN = iNN,
-                        m = n.neighbors)
+                        iNN = iNN)
   }
   nlogDet <- 2*sum(log(diag(Linv)))
   Eta <- Linv%*%(t(x)-Mu)

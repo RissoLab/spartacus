@@ -48,8 +48,7 @@ updateAlphaBeta <- function(x, n.neighbors = 20, gene.names = NULL){
       Linv <- computeLinv(covparms = c(1, Phi[r], Delta[k,r]),
                           covfun_name = "exponential_isotropic",
                           locs.ordered = coordinates[Ds == r,],
-                          iNN = iNN[[r]],
-                          m = n.neighbors)
+                          iNN = iNN[[r]])
       Eta <- Linv%*%(t(X[Cs == k, Ds == r])-Mu[k,r])
       Qt <- colSums(Eta*Eta)
 
@@ -58,7 +57,6 @@ updateAlphaBeta <- function(x, n.neighbors = 20, gene.names = NULL){
                                                         locs.ordered = coordinates[Ds ==r, ],
                                                         Linv = Linv,
                                                         iNN = iNN[[r]],
-                                                        n.neighbors = n.neighbors,
                                                         Alpha = alpha0,
                                                         Tau = tau0,
                                                         Mu = Mu[k,r],

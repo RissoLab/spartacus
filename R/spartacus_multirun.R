@@ -15,7 +15,7 @@
 #' @param data either a `SpatialExperiment` object or a matrix containing the experiment.
 #' @param assay if `class(data) == "SpatialExperiment"`, it takes either the name or the index of the assay to be used.
 #' @param coordinates if `is.matrix(data)`, it takes the matrix of spatial coordinates of dimension `ncol(data)` x 2.
-#' @param column.labels a vector containing the labels of column cluster.
+#' @param spot.labels a vector containing the labels of column cluster.
 #' @param n.neighbors the number of nearest neighbors for fitting the nearest-neighbor Gaussian process (NNGP) model. The default value is 20. ??Da aggiungere commento sulla scelta di m??
 #' @param K the number of row clusters (only when `input.values == NULL`);
 #' @param Alpha the constraint for the Alpha parameters. ??Da aggiungere nei dettagli le caratteristiche del vincolo, se lasciamo la libertà di farlo??
@@ -49,9 +49,12 @@
 spartacus_multirun <- function(data,
                                assay = NULL,
                                coordinates = NULL,
-                               column.labels,
+                               K,
+                               R = NULL,
+                               unsupervised = TRUE,
+                               spot.labels,
+                               approximated = TRUE,
                                n.neighbors = 20,
-                               K = NULL,
                                Alpha = 10,
                                Tau = 1,
                                compute.uncertainty = TRUE,
@@ -71,13 +74,21 @@ spartacus_multirun <- function(data,
     x <- data
   }
 
-  results <- future_lapply(1:nstart, FUN = function(l)
-    spartacus(data = x, coordinates = coordinates, column.labels = column.labels,
-              n.neighbors = n.neighbors, K = K, Alpha = Alpha, Tau = Tau,
-              max.iter = max.iter, estimate.iterations = estimate.iterations, conv.criterion = conv.criterion,
-              verbose = F), future.seed = NULL
-  )
+  if(approximated){
+    results <- future_lapply(1:nstart, FUN = function(l)
+      spartacus.internal(data = x, coordinates = coordinates,
+                         K = K, R = R, unsupervised = unsupervised, spot.labels = spot.labels,
+                         n.neighbors = n.neighbors, Alpha = Alpha, Tau = Tau,
+                         max.iter = max.iter, conv.criterion = conv.criterion,
+                         verbose = F), future.seed = NULL
+    )
+  }
+  else{
+    # da inserire codice di spartaco con possibilità di specificare le etichette di spot
+  }
 
+
+  if(K == 1) compute.uncertainty = F
   output <- combineSpartacus(results, compute.uncertainty = compute.uncertainty)
   return(output)
 }

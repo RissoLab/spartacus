@@ -1,11 +1,10 @@
-logL.Cocluster.approx <- function(x, locs.ordered, iNN, n.neighbors, Alpha, Tau, Mu, Delta, Beta, Phi){
+logL.Cocluster.approx <- function(x, locs.ordered, iNN, Alpha, Tau, Mu, Delta, Beta, Phi){
   if(is.vector(x)) x <- matrix(x, nrow = 1)
 
   Linv <- computeLinv(covparms = c(1, Phi, Delta),
                       covfun_name = "exponential_isotropic",
                       locs.ordered = locs.ordered,
-                      iNN = iNN,
-                      m = n.neighbors)
+                      iNN = iNN)
   nlogDet <- 2*sum(log(diag(Linv)))
   Eta <- Linv%*%(t(x)-Mu)
   Qt <- sum(Eta*Eta)

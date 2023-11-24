@@ -8,9 +8,12 @@ spartacus_multirun(
   data,
   assay = NULL,
   coordinates = NULL,
-  column.labels,
+  K,
+  R = NULL,
+  unsupervised = TRUE,
+  spot.labels,
+  approximated = TRUE,
   n.neighbors = 20,
-  K = NULL,
   Alpha = 10,
   Tau = 1,
   compute.uncertainty = TRUE,
@@ -27,11 +30,11 @@ spartacus_multirun(
 
 \item{coordinates}{if `is.matrix(data)`, it takes the matrix of spatial coordinates of dimension `ncol(data)` x 2.}
 
-\item{column.labels}{a vector containing the labels of column cluster.}
+\item{K}{the number of row clusters (only when `input.values == NULL`);}
+
+\item{spot.labels}{a vector containing the labels of column cluster.}
 
 \item{n.neighbors}{the number of nearest neighbors for fitting the nearest-neighbor Gaussian process (NNGP) model. The default value is 20. ??Da aggiungere commento sulla scelta di m??}
-
-\item{K}{the number of row clusters (only when `input.values == NULL`);}
 
 \item{Alpha}{the constraint for the Alpha parameters. ??Da aggiungere nei dettagli le caratteristiche del vincolo, se lasciamo la libertà di farlo??}
 
