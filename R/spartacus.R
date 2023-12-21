@@ -15,15 +15,17 @@
 #' @param data either a `SpatialExperiment` object or a matrix containing the experiment.
 #' @param assay if `class(data) == "SpatialExperiment"`, it takes either the name or the index of the assay to be used.
 #' @param coordinates if `is.matrix(data)`, it takes the matrix of spatial coordinates of dimension `ncol(data)` x 2.
-#' @param spot.labels a vector containing the labels of column cluster.
+#' @param unsupervised set if the columns clustering has to be performed or not, the default is `TRUE`. If `FALSE`, spot.labels must be provided.
+#' @param spot.labels a vector containing the labels of column cluster, the default is `NULL`.
+#' @param approximated if `TRUE` the spartacus method is performed (default), else if `FALSE` the spartaco method is performed.
 #' @param n.neighbors the number of nearest neighbors for fitting the nearest-neighbor Gaussian process (NNGP) model. The default value is 20. ??Da aggiungere commento sulla scelta di m??
 #' @param K the number of row clusters (only when `input.values == NULL`);
+#' @param R the number of column clusters (only when `input.values == NULL`);
 #' @param Alpha the constraint for the Alpha parameters. ??Da aggiungere nei dettagli le caratteristiche del vincolo, se lasciamo la libertà di farlo??
 #' @param Tau the constraint for the Tau parameters. ??Da aggiungere nei dettagli le caratteristiche del vincolo, se lasciamo la libertà di farlo??
 #' @param max.iter the maximum number of iterations the estimation algorithm is run.
-#' @param estimate.iterations the maximum number of iterations within each M Step.
 #' @param conv.criterion a list containing the parameters that define a converge criterion (see **Details**).
-#' @param verbose progress of estimation.
+#' @param Metropolis.iterations the number of iteration done in the column clustering estimation.
 #'
 #' @return An object of class `spartacus` with the parameter estimates, the row clustering labels, the log-likelihood value at each iteration, the ICL, the data matrix and the coordinates matrix, and the clustering uncertainty.
 #'
@@ -58,6 +60,7 @@ spartacus <- function(data,
                       Tau = 1,
                       max.iter = 1000,
                       estimate.iterations = 100,
+                      Metropolis.iterations = 150,
                       conv.criterion = list(iterations = 10, epsilon = 1e-4),
                       verbose = F
 )
@@ -72,11 +75,13 @@ spartacus <- function(data,
     x <- data
   }
 
+  if(unsupervised == FALSE && is.null(spots.labels)) cat("For the semi-supervised version of the model spot.labels vector must be provided.\n")
+
   if(approximated){
     spartacus.internal(data = x, coordinates = coordinates,
                       K = K, R = R, unsupervised = unsupervised, spot.labels = spot.labels,
                       n.neighbors = n.neighbors, Alpha = Alpha, Tau = Tau,
-                      max.iter = max.iter, conv.criterion = conv.criterion,
+                      max.iter = max.iter, Metropolis.iterations = Metropolis.iterations, conv.criterion = conv.criterion,
                       verbose = F)
   }
   else{

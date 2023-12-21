@@ -4,7 +4,12 @@
 \alias{combineSpartacus}
 \title{Manually combine multiple runs of SpaRTaCUS}
 \usage{
-combineSpartacus(x = NULL, search.dir = NULL, compute.uncertainty = T)
+combineSpartacus(
+  x = NULL,
+  search.dir = NULL,
+  compute.uncertainty.row = T,
+  compute.uncertainty.col = T
+)
 }
 \arguments{
 \item{x}{either a list of `spartacus` objects or a vector containing the names of the files to be combined;}

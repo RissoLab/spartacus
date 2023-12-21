@@ -3,8 +3,8 @@ RowClustering.approx <- function(x, Ds, coordinates, iNN, Alpha, Tau, Mu, Delta,
   R <- ifelse(is.vector(Mu), 1, ncol(Mu))
 
   ll <- matrix(0, nrow(x), K)
-  for (r in 1:K) {
-    for (k in 1:R) {
+  for (r in 1:R) {
+    for (k in 1:K) {
       Linv <- computeLinv(covparms = c(1, Phi[r], Delta[k,r]),
                           covfun_name = "exponential_isotropic",
                           locs.ordered = coordinates[Ds == r, ],

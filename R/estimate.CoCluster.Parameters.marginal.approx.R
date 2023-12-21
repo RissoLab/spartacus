@@ -1,14 +1,14 @@
 estimate.CoCluster.Parameters.marginal.approx <- function(x,
-                                                       locs.ordered,
-                                                       iNN,
-                                                       Alpha,
-                                                       Tau,
-                                                       mu0,
-                                                       delta0,
-                                                       beta0,
-                                                       Phi
+                                                          locs.ordered,
+                                                          iNN,
+                                                          Alpha,
+                                                          Tau,
+                                                          mu0,
+                                                          delta0,
+                                                          beta0,
+                                                          Phi
 )
-{
+{ #aggiungere gestione caso di x vettore
   n <- nrow(x)
   p <- ncol(x)
   cur.mu <- mu0
@@ -28,7 +28,7 @@ estimate.CoCluster.Parameters.marginal.approx <- function(x,
     Eta <- Linv%*%(t(x)-mu.tmp)
     Qt <- sum(Eta*Eta)
     return(n*p*log(Qt/(n*p))-n*nlogDet)
-  }, lower = 1e-4, upper = 10^4, control = list(maxit = 20))
+  }, lower = 1e-4, upper = 10^4, control = list(maxit = 100))
   if(routine.delta$convergence != 0){
     stop("Convergence error in delta!")
   }

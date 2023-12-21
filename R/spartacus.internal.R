@@ -55,6 +55,7 @@ spartacus.internal <- function(data,
                               input.values = NULL,
                               max.iter = 1000,
                               conv.criterion = list(iterations = 10, epsilon = 1e-4),
+                              Metropolis.iterations = 150,
                               verbose = F,
                               save.options = NULL,
                               seed = NULL
@@ -80,7 +81,7 @@ spartacus.internal <- function(data,
               K = K, R = R, unsupervised = unsupervised, spot.labels = spot.labels,
               n.neighbors = n.neighbors, Alpha = Alpha, Tau = Tau,
               input.values = input.values,
-              max.iter = max.iter, conv.criterion = conv.criterion,
+              max.iter = max.iter, Metropolis.iterations = Metropolis.iterations, conv.criterion = conv.criterion,
               verbose = verbose, save.options = save.options
   )
 }

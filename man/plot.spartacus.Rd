@@ -15,6 +15,7 @@ This function returns the ggplots of the mean and the spatial signal-to-noise ra
   display.all.spots = T,
   range.mu = NULL,
   range.sRatio = NULL,
+  size = NULL,
   ...
 )
 }

@@ -22,7 +22,7 @@
 #' @return The requested plot is displayed. In addition, if assigned to an object, it will return the `ggplot` object.
 #'
 plot.spartacus <- function(x, type = 1, gene.name = readline("gene name: "), k = NULL, r = 1:ncol(x$mu), manual.palette = NULL,
-                          display.all.spots = T, range.mu = NULL, range.sRatio = NULL, ...){
+                          display.all.spots = T, range.mu = NULL, range.sRatio = NULL, size = NULL, ...){
   if(class(x) != "spartacus") stop("the input file is not a spartacus object")
   if(length(type) > 1) type <- 1
   K <- nrow(x$mu)
@@ -42,6 +42,8 @@ plot.spartacus <- function(x, type = 1, gene.name = readline("gene name: "), k =
   ylim.left <- c(0, cumsum(prop.y)[-K])
   ylim.right <- cumsum(prop.y)
 
+
+  if(is.null(size)) size = 3
   if(is.null(range.mu)){
     mu.min <- min(gr$Mu)
     mu.max <- max(gr$Mu)
@@ -127,7 +129,7 @@ plot.spartacus <- function(x, type = 1, gene.name = readline("gene name: "), k =
         Coord <- data.frame(x = x$coordinates[,2], y = -x$coordinates[,1], z = as.factor(x$Ds))
         Coord$group <- as.factor(as.numeric(x$Ds %in% c(1,7:9)))
         Plots <- ggplot(Coord, aes(x, y, color = z))+
-          geom_point(size = 3)+theme_bw()+
+          geom_point(size = size)+theme_bw()+
           labs(col = "")+
           labs(col = expression(D[r]))+
           theme(panel.grid.major = element_blank(),
@@ -143,8 +145,7 @@ plot.spartacus <- function(x, type = 1, gene.name = readline("gene name: "), k =
                 #legend.position = "bottom",
                 #legend.spacing.x = unit(0.3, 'cm'),
                 title = element_text(size=18),
-                plot.margin=grid::unit(c(3,2,3,2), "mm"))+
-          geom_point(shape = 1,size = 3,colour = "black")
+                plot.margin=grid::unit(c(3,2,3,2), "mm")) +
         #if(use.greys)
         #    Plots <- Plots + scale_color_grey(start = 0, end = .9) else
         Plots <- Plots + scale_fill_brewer( palette = "Set1")

@@ -15,7 +15,7 @@
 #' If the `spartaco` objects are stored into different files, the vector `x` receives the names of the files,
 #' and `search.dir` is the path of the directory where the files are stored.
 
-combineSpartacus <- function(x = NULL, search.dir = NULL, compute.uncertainty = T){
+combineSpartacus <- function(x = NULL, search.dir = NULL, compute.uncertainty.row = T, compute.uncertainty.col = T){
   loadRData <- function(fileName){
     #loads an RData file, and returns it
     load(fileName)
@@ -53,17 +53,17 @@ combineSpartacus <- function(x = NULL, search.dir = NULL, compute.uncertainty = 
       final$ICL <- results[[i]]$ICL
       final$logL <- results[[i]]$logL
       final$n.neighbors <- results[[i]]$n.neighbors
+      final$x <- results[[i]]$x
+      final$coordinates <- results[[i]]$coordinates
     }
   }
   final$max.logL <- maxi
-  final$x <- results[[i]]$x
-  final$coordinates <- results[[i]]$coordinates
 
-  if(compute.uncertainty){
-    if(nrow(final$mu) == 1) return(-1)
-    best.j <- which.max(final$max.logL)
-    j.to.invest <- setdiff(1:length(final$max.logL), best.j)
-    final$cluster.discr <- list()
+
+  best.j <- which.max(final$max.logL)
+  j.to.invest <- setdiff(1:length(final$max.logL), best.j)
+  final$cluster.discr <- list()
+  if(compute.uncertainty.row){
     # evaluate the discrepancy across the rows
     cat("Computing the row discrepancy...\n")
     CERs <- matrix(0, nrow(final$mu), length(j.to.invest))
@@ -78,6 +78,23 @@ combineSpartacus <- function(x = NULL, search.dir = NULL, compute.uncertainty = 
     })
     w <- 1/(final$max.logL[best.j]-final$max.logL[-best.j])
     final$cluster.discr$rows <- as.vector((CERs %*% w)/sum(w))
+
+  }
+  if(compute.uncertainty.col){
+    # evaluate the discrepancy across the columns
+    cat("Computing the column discrepancy...\n")
+    CERs <- matrix(0, ncol(final$mu), length(j.to.invest))
+    sapply(1:ncol(final$mu), function(r){
+      reference <- as.numeric(final$Ds == r)
+      sapply(1:length(j.to.invest), function(j){
+        classif <- table(final$Ds, results[[j.to.invest[j]]]$Ds)[r,]
+        r.j <- as.numeric(attr(classif, "names"))[which.max(classif)]
+        comparison <- as.numeric(results[[j.to.invest[j]]]$Ds == r.j)
+        CERs[r,j] <<- CER(reference = reference, estimate = comparison)
+      })
+    })
+    w <- 1/(final$max.logL[best.j]-final$max.logL[-best.j])
+    final$cluster.discr$columns <- as.vector((CERs %*% w)/sum(w))
   }
 
   # execution time
