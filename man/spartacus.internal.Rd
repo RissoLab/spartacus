@@ -18,6 +18,7 @@ spartacus.internal(
   input.values = NULL,
   max.iter = 1000,
   conv.criterion = list(iterations = 10, epsilon = 1e-04),
+  column.allocation.algorithm = "CEM",
   Metropolis.iterations = 150,
   verbose = F,
   save.options = NULL,

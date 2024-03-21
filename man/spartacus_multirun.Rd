@@ -18,6 +18,7 @@ spartacus_multirun(
   Tau = 1,
   nstart = 5,
   max.iter = 1000,
+  column.allocation.algorithm = "CEM",
   Metropolis.iterations = 150,
   conv.criterion = list(iterations = 10, epsilon = 1e-04)
 )
