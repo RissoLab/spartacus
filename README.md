@@ -1,4 +1,1 @@
-# spartacus
-<div style="text-align: right;">
-  <img src="logo2.jpeg" alt="Logo" style="width: 100px; height: auto;">
-</div>
+# **SPA**tially **R**esolved **T**r**A**nscriptomics **C**lustering **U**sing **S**urroundings (SpaRTaCUS) <img src="logo2.jpeg" align="right" width="115" />
