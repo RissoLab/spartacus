@@ -15,7 +15,7 @@ remotes::install_github("RissoLab/spartacus")
 
 ## Run the model
 
-Let `x` be the spatial experiment matrix containing the expression of `nrow(x)` genes measured over `ncol(x)` spots. The spatial coordinates of the spots are stored in the matrix `coordinates`. By default, the sparsity of the estimation is set to 'n.neighbors' = 20. You can run SpaRTaCUS and search for K gene clusters and R spot clusters, execute the provided code:
+Let `x` be the spatial experiment matrix containing the expression of `nrow(x)` genes measured over `ncol(x)` spots. The spatial coordinates of the spots are stored in the matrix `coordinates`. By default, the sparsity of the estimation is set to `n.neighbors` = 20. You can run SpaRTaCUS and search for K gene clusters and R spot clusters, execute the provided code:
 
 ``` r
 library(spartacus)
